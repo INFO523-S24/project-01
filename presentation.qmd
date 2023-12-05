@@ -12,44 +12,43 @@ format:
     theme:  ['data/customtheming.scss']
   
 editor: visual
+jupyter: python3
 execute:
   echo: false
 ---
 
-```{r}
+```{python}
 #| label: load-packages
 #| include: false
 
 # Load packages here
-pacman::p_load(tidymodels,
-               tidyverse)
+import pandas as pd
+import seaborn as sns
 
 ```
 
-```{r}
+```{python}
 #| label: setup
 #| include: false
+#| 
+# Set up plot theme and figure resolution
+sns.set_theme(style="whitegrid")
+sns.set_context("notebook", font_scale=1.1)
 
-# Plot theme
-ggplot2::theme_set(ggplot2::theme_minimal(base_size = 11))
-
-# For better figure resolution
-knitr::opts_chunk$set(
-  fig.retina = 3, 
-  dpi = 300, 
-  fig.width = 6, 
-  fig.asp = 0.618 
-  )
+import matplotlib.pyplot as plt
+plt.rcParams['figure.dpi'] = 300
+plt.rcParams['savefig.dpi'] = 300
+plt.rcParams['figure.figsize'] = (6, 6 * 0.618)
 ```
 
-```{r}
+```{python}
 #| label: load-data
 #| include: false
-# Load data here
-data(mtcars)
-mtcars$speed <- mtcars$hp / mtcars$wt
+# Load data in Python
+mtcars = sns.load_dataset('mpg').dropna()  # mtcars dataset is similar to the mpg dataset from seaborn
+mtcars['speed'] = mtcars['horsepower'] / mtcars['weight']
 
-data("penguins")
+penguins = sns.load_dataset('penguins').dropna()
 ```
 
 # Using Quarto for presentations
@@ -82,22 +81,29 @@ or in two columns
 
 ## Code
 
-```{r, echo=FALSE}
-model <- lm(mpg ~ speed, data = mtcars) 
+```{python}
+from sklearn.linear_model import LinearRegression
+import statsmodels.api as sm
+import pandas as pd
 
-model |> tidy()
+# Fit a linear regression model
+X = mtcars[['speed']]
+y = mtcars['mpg']
+model = LinearRegression().fit(X, y)
 
-model |> glance()
-
+# Summary of the model
+X2 = sm.add_constant(X)
+est = sm.OLS(y, X2)
+est2 = est.fit()
+print(est2.summary())
 ```
 
 ## Plots
 
-```{r}
-penguins |>
-  mutate(species = ifelse(species == "Adelie", "Adelie", "Other")) |>
-  ggplot(aes(x = flipper_length_mm, y = body_mass_g, color = species)) +
-  geom_point()
+```{python}
+penguins['species'] = penguins['species'].apply(lambda x: "Adelie" if x == "Adelie" else "Other")
+sns.scatterplot(data=penguins, x='flipper_length_mm', y='body_mass_g', hue='species')
+plt.show()
 ```
 
 ## Plot and text
@@ -110,13 +116,12 @@ penguins |>
 :::
 
 ::: {.column width="50%"}
-```{r, warning=FALSE, fig.width=5.5}
-penguins |>
-  ggplot(aes(x = bill_length_mm, y = species, color = species)) +
-  geom_boxplot(linewidth = 0.75,
-               outlier.size = 2.5) +
-  theme_minimal(base_size = 15) +
-  theme(legend.key.size = unit(0.8, "cm"))
+```{python}
+#| warning: false
+#| fig.width: 5.5
+fig, ax = plt.subplots(figsize=(5.5, 5.5 * 0.618))
+sns.boxplot(data=penguins, x='bill_length_mm', y='species', hue='species', ax=ax)
+plt.show()
 ```
 :::
 :::
@@ -127,11 +132,8 @@ penguins |>
 
 If you want to generate a table, make sure it is in the HTML format (instead of Markdown or other formats), e.g.,
 
-```{r}
-penguins |> 
-  head() |>
-  kableExtra::kable() |>
-  kableExtra::kable_styling()
+```{python}
+penguins.head().to_html()
 ```
 
 ## Images
@@ -160,6 +162,6 @@ Limitations:
 
 ## Feeling adventurous?
 
--   You are welcomed to use the default styling of the slides. In fact, that\'s what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
+-   You are welcomed to use the default styling of the slides. In fact, that's what I expect majority of you will do. You will differentiate yourself with the content of your presentation.
 
 -   But some of you might want to play around with slide styling. Some solutions for this can be found at https://quarto.org/docs/presentations/revealjs.

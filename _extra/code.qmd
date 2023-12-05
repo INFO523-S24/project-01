@@ -1,10 +1,10 @@
 
 
-```{r}
+```{python}
 #| label: load-pkgs
 #| message: false
 
-library(reticulate)
+import numpy as np
 
 ```
 

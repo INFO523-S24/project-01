@@ -3,17 +3,18 @@ title: "Proposal title"
 subtitle: "Proposal"
 format: html
 editor: visual
+jupyter: python3
 ---
 
-```{r}
+```{python}
 #| label: load-pkgs
 #| message: false
-library(reticulate)
+import numpy as np
 ```
 
 ## Dataset
 
-```{r}
+```{python}
 #| label: load-dataset
 #| message: false
 ```
