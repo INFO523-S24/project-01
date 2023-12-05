@@ -8,7 +8,7 @@ editor: visual
 ```{r}
 #| label: load-pkgs
 #| message: false
-library(tidyverse)
+library(reticulate)
 ```
 
 ## Dataset
