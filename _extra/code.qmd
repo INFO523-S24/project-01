@@ -4,15 +4,13 @@
 #| label: load-pkgs
 #| message: false
 
-suppressWarnings(library(tidyverse))
-library(knitr)
-library(lubridate)
+library(reticulate)
 
 ```
 
 
 ## Dataset Setup
-```{r}
+```{python}
 
 
 ```
@@ -20,7 +18,7 @@ library(lubridate)
 
 
 ## Plots
-```{r}
+```{python}
 
 
 ```
