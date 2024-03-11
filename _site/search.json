@@ -4,7 +4,7 @@
     "href": "proposal.html",
     "title": "Proposal title",
     "section": "",
-    "text": "import numpy as np"
+    "text": "import numpy as np\nimport seaborn as sns"
   },
   {
     "objectID": "proposal.html#dataset",
